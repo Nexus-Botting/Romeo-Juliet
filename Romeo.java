@@ -7,7 +7,11 @@ import org.powerbot.script.rt4.ClientContext;
 
 import java.util.concurrent.Callable;
 
-@Script.Manifest(name="Romeo & Juliet", description="trying")
+@Script.Manifest(name="Romeo & Juliet",
+        description="Completes the Romeo & Juliet quest. Start in Varrock courtyard. " +
+                "Known issues: Will occasionally click same npc twice during chat. " +
+                "Might pick more than one Cadava berry. " +
+                "Might try to speak to Juliet before opening door.")
 
 
 public class Romeo extends PollingScript<ClientContext> {
@@ -24,7 +28,7 @@ public class Romeo extends PollingScript<ClientContext> {
 
     public static final String[] CHAT_OPTIONS = {"Yes, ok, I'll let her know.","Ok, thanks.","Perhaps"};
 
-    public static final Tile[] romeoToJuliet = {
+    private static final Tile[] romeoToJuliet = {
             new Tile(3216, 3429, 0),
             new Tile(3213, 3429, 0),
             new Tile(3210, 3429, 0),
@@ -51,7 +55,7 @@ public class Romeo extends PollingScript<ClientContext> {
             new Tile(3158, 3426, 1),
             new Tile(3161, 3426, 1)};
 
-    public static final Tile[] romeoToFather = {
+    private static final Tile[] romeoToFather = {
             new Tile(3215, 3429, 0),
             new Tile(3218, 3429, 0),
             new Tile(3221, 3429, 0),
@@ -84,7 +88,7 @@ public class Romeo extends PollingScript<ClientContext> {
             new Tile(3254, 3480, 0),
             new Tile(3255, 3483, 0)};
 
-    public static final Tile[] fatherToBush = {
+    private static final Tile[] fatherToBush = {
             new Tile(3253, 3483, 0),
             new Tile(3253, 3480, 0),
             new Tile(3250, 3480, 0),
@@ -142,8 +146,8 @@ public class Romeo extends PollingScript<ClientContext> {
             new Tile(3273, 3374, 0)};
 
 
-    //Takes the long way south around cowpen to avoid the monks who kept killing me
-    public static final Tile[] bushToApo = {
+    /**Takes the long way south around cowpen to avoid the monks who kept killing me*/
+    private static final Tile[] bushToApo = {
             new Tile(3276, 3375, 0),
             new Tile(3276, 3372, 0),
             new Tile(3274, 3369, 0),
@@ -204,7 +208,7 @@ public class Romeo extends PollingScript<ClientContext> {
             new Tile(3193, 3403, 0),
             new Tile(3196, 3404, 0)};
 
-    public static final Tile[] apoToJuliet = {
+    private static final Tile[] apoToJuliet = {
             new Tile(3195, 3403, 0),
             new Tile(3192, 3403, 0),
             new Tile(3189, 3403, 0),
@@ -228,7 +232,7 @@ public class Romeo extends PollingScript<ClientContext> {
             new Tile(3158, 3426, 1)};
 
 
-
+    /**Uses walker class made by Chris*/
     private final Walker walker = new Walker(ctx);
 
     @Override
@@ -236,20 +240,25 @@ public class Romeo extends PollingScript<ClientContext> {
         chat(ROMEO);
     }
 
+
+
+    /**Uses completion variable to cycle through states. */
     @Override
     public void poll() {
+        /**uses these vars to check distance from romeo or juliet*/
         Player q = ctx.players.local();
         Tile end = romeoToJuliet[23];
         Tile start = romeoToJuliet[0];
 
-
+        /**if quest has green text, quest is already done*/
         if (ctx.widgets.widget(399).component(7).component(12).textColor() == 65280) {
             log.info("DONE!");
             completion=0;
             stop();
         }
 
-
+        /**each case focuses on getting to target, then speaking to them. Usually ends with leaving to next target.
+            exceptions are for collecting the cadava berries*/
             switch (state()) {
             case FIRST:
                 if (ready() && !ctx.npcs.select().id(ROMEO).viewable().isEmpty()) {
@@ -514,6 +523,7 @@ public class Romeo extends PollingScript<ClientContext> {
     }
     private enum State {NOT_USED,FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH, TENTH, ELEVEN, TWELVE, THIRTEEN}
 
+
     private State state() {
 
         switch (completion){
@@ -552,7 +562,8 @@ public class Romeo extends PollingScript<ClientContext> {
         }
 
 
-    public boolean ready() {
+    /**checks to see if the player is in motion or if it can toggle run    */
+    private boolean ready() {
 
         if (!ctx.players.local().inMotion() || ctx.movement.destination().equals(Tile.NIL) || ctx.movement.destination().distanceTo(ctx.players.local()) < 5) {
             if(ctx.movement.energyLevel() >= 50 && !ctx.movement.running()){
@@ -563,6 +574,8 @@ public class Romeo extends PollingScript<ClientContext> {
         return false;
     }
 
+
+    /**Cycles through chat options*/
     private void chat(int x){
 
         if (!ctx.chat.chatting()) {
@@ -597,6 +610,8 @@ public class Romeo extends PollingScript<ClientContext> {
 
     }
 
+    /**used to find romeo if he's in general store*/
+
     private boolean findRomeo(){
         final Tile[] find = {
                 new Tile(3213, 3426, 0),
@@ -626,6 +641,9 @@ public class Romeo extends PollingScript<ClientContext> {
             return true;
 
             }
+
+
+/**checks to see if quest complete screen is up*/
 
     private void checkComplete(){
 
