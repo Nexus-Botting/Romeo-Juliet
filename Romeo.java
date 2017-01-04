@@ -16,17 +16,17 @@ import java.util.concurrent.Callable;
 
 public class Romeo extends PollingScript<ClientContext> {
 
-    public int completion = 1;
-    public static final int ROMEO = 5037;
-    public static final int JULIET = 5035;
-    public static final int NOTE = 755;
-    public static final int FATHER = 5038;
-    public static final int BUSH = 23625;
-    public static final int BERRY = 753;
-    public static final int POT = 756;
-    public static final int APOTHECARY = 5036;
+    private int completion = 1;
+    private static final int ROMEO = 5037;
+    private static final int JULIET = 5035;
+    private static final int NOTE = 755;
+    private static final int FATHER = 5038;
+    private static final int BUSH = 23625;
+    private static final int BERRY = 753;
+    private static final int POT = 756;
+    private static final int APOTHECARY = 5036;
 
-    public static final String[] CHAT_OPTIONS = {"Yes, ok, I'll let her know.","Ok, thanks.","Perhaps"};
+    private static final String[] CHAT_OPTIONS = {"Yes, ok, I'll let her know.","Ok, thanks.","Perhaps"};
 
     private static final Tile[] romeoToJuliet = {
             new Tile(3216, 3429, 0),
