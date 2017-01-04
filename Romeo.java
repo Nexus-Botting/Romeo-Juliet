@@ -1,4 +1,4 @@
-package Romeo;
+package romeo;
 
 import org.powerbot.script.*;
 import org.powerbot.script.Tile;
@@ -7,8 +7,8 @@ import org.powerbot.script.rt4.ClientContext;
 
 import java.util.concurrent.Callable;
 
-@Script.Manifest(name="Romeo & Juliet",
-        description="Completes the Romeo & Juliet quest. Start in Varrock courtyard. " +
+@Script.Manifest(name="romeo & Juliet",
+        description="Completes the romeo & Juliet quest. Start in Varrock courtyard. " +
                 "Known issues: Will occasionally click same npc twice during chat. " +
                 "Might pick more than one Cadava berry. " +
                 "Might try to speak to Juliet before opening door.")

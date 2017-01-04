@@ -1,4 +1,4 @@
-package Romeo;
+package romeo;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
